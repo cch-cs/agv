@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <!-- ros control plugin -->
+  <xacro:macro name="ros_control">
+    <gazebo>
+      <plugin name="ros_control" filename="libgazebo_ros_control.so">
+        <!--<robotNamespace>/agv_low</robotNamespace>-->
+	<robotParam>robot_description</robotParam>
+        <controlPeriod>0.001</controlPeriod>
+	<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      </plugin>
+    </gazebo>
+	</xacro:macro>
+<!--  
+  <xacro:macro name="omni_steering" params="prefix">
+	<gazebo>
+	    <plugin name="omni_steering" filename="libgazebo_ros_planar_move.so">
+	      <commandTopic>agv_base_control/cmd_vel</commandTopic>  
+	      <odometryTopic>agv_base_control/odom</odometryTopic>
+	      <odometryFrame>${prefix}odom</odometryFrame>
+	      <odometryRate>50.0</odometryRate>
+	      <robotBaseFrame>${prefix}base_footprint</robotBaseFrame>
+	      <publishTF>true</publishTF>
+	    </plugin>
+	  </gazebo>
+  </xacro:macro>
+-->
+<!--
+  <xacro:macro name="ros_force_based_move" params="prefix">
+	  <gazebo>
+		 <plugin name="ros_force_based_move" filename="libgazebo_ros_force_based_move.so">
+			 <commandTopic>agv/cmd_vel</commandTopic>  
+			 <odometryTopic>agv/odom</odometryTopic>
+	         <odometryFrame>${prefix}odom</odometryFrame>
+			 <yaw_velocity_p_gain>100.0</yaw_velocity_p_gain>
+			 <x_velocity_p_gain>100.0</x_velocity_p_gain>
+			 <y_velocity_p_gain>100.0</y_velocity_p_gain>
+			 <robotBaseFrame>${prefix}base_footprint</robotBaseFrame>
+			 <odometryRate>50.0</odometryRate>
+			 <publishOdometryTf>true</publishOdometryTf>
+		 </plugin>
+	  </gazebo>
+  </xacro:macro>
+ -->
+
+  <xacro:macro name="planar_move" params="prefix">
+		<gazebo>
+	    <plugin name="planar_move" filename="libgazebo_ros_planar_move.so">
+	      <commandTopic>agv/cmd_vel</commandTopic>  
+	      <odometryTopic>agv/odom</odometryTopic>
+	      <odometryFrame>${prefix}odom</odometryFrame>
+	      <odometryRate>50.0</odometryRate>
+	      <robotBaseFrame>${prefix}base_footprint</robotBaseFrame>
+	      <publishTF>true</publishTF>
+	    </plugin>
+	  </gazebo>
+  </xacro:macro>
+
+</robot>

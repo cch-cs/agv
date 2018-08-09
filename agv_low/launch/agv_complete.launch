@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- SUMMIT XL STEEL-->
+	<!-- disables gazebo ros_control plugin -->
+	<arg name="ros_planar_move_plugin" default="true"/>
+
+	<!--launch_navigation and launch_navigation_nomap args are exclusive
+	and they are (or not) launched for all robots-->
+	<arg name="launch_rviz" default="false"/>
+	<arg name="gazebo_world" default="$(find agv_gazebo)/worlds/agv.world"/>
+	
+	<!-- arguments robot a -->
+	<arg name="launch_robot" default="true"/>
+	<arg name="map_file" default="willow_garage/willow_garage.yaml"/>
+	<arg name="localization_robot" default="false"/>
+	<arg name="gmapping_robot" default="false"/>
+	<arg name="move_base_robot" default="false"/>
+	<arg name="amcl_and_mapserver" default="false"/>
+	<arg name="xacro_robot" default="agv_urdf.xacro"/>
+	
+	<include file="$(find agv_gazebo)/launch/agv_gazebo.launch">
+		<!-- general args -->
+		<arg name="launch_rviz" value="$(arg launch_rviz)"/>
+		<arg name="gazebo_world" value="$(arg gazebo_world)"/>
+		<arg name="ros_planar_move_plugin" value="$(arg ros_planar_move_plugin)"/>
+		<!-- robot_a args -->
+		<arg name="launch_robot" value="$(arg launch_robot)"/>
+		<arg name="xacro_robot" value="$(arg xacro_robot)"/>
+
+	</include>
+
+
+</launch>

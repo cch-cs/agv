@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="wheel_mass" value="2.166" /> <!-- in kg-->
+  <xacro:property name="parent" value="agv_base"/>
+  <xacro:property name="pi" value="3.14159"/>
+ 
+ 
+  <xacro:macro name="mecanum_inertia">
+    <inertia  ixx="0.008" ixy = "0" ixz = "0"
+              iyy="0.008" iyz = "0"
+              izz="0.010" /> 
+  </xacro:macro>
+
+  <xacro:macro name="mecanum_wheel" params="prefix angle wheel_pos parent">
+  
+  
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <parent link="${parent}"/>
+      <child link="${prefix}_wheel_link"/>
+      <xacro:if value="${prefix == 'agv_front_left'}">
+      	<origin xyz="0.835 0.224751 -0.206" />
+      </xacro:if>
+      <xacro:if value="${prefix == 'agv_front_right'}">
+      	<origin xyz="0.835 -0.260749 -0.206" />
+      </xacro:if>
+      <xacro:if value="${prefix == 'agv_back_left'}">
+      	<origin xyz="0.125 0.214251 -0.205" />
+      </xacro:if>
+      <xacro:if value="${prefix == 'agv_back_right'}">
+      	<origin xyz="0.125 -0.273249 -0.205" />
+      </xacro:if>
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <limit effort="100" velocity="100"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+  
+    <link name="${prefix}_wheel_link">
+      <visual>
+      	<origin xyz="0 0 0" rpy="${pi*angle} 0 0" />
+          <xacro:if value="${wheel_pos}">
+            <geometry>     
+              <mesh filename="package://agv_low/meshes/Radbefestigung mit Motor-Getrieb (LVA33)_wheels.stl" />
+            </geometry>          
+          </xacro:if>
+          <xacro:unless value="${wheel_pos}">
+            <geometry>     
+              <mesh filename="package://agv_low/meshes/Radbefestigung mit Motor-Getrieb (LVA33)_MIR_wheels.stl" />
+            </geometry>			  
+		  </xacro:unless>	         
+        <material name="darkgrey">
+           <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+
+      <collision>
+			<origin xyz="0 0 0" rpy="${pi*angle} 0 0" />
+        		<geometry>
+					<mesh filename="package://agv_low/meshes/Radbefestigung mit Motor-Getrieb (LVA33)_wheels_collision.stl"/>
+				</geometry>
+      </collision>
+      
+      <inertial>
+        <mass value="${wheel_mass}" />
+        <origin xyz="0 0 0.076" />
+        <mecanum_inertia />
+      </inertial>
+    </link>
+    
+    <!-- Transmission is important to link the joints and the controller (see summit_xl_control/config/summit_xl_control.yaml)-->
+    <transmission name="${prefix}_wheel_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_wheel_joint" >
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>              
+      <actuator name="${prefix}_wheel_joint_motor">
+         <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    
+    <gazebo reference="${prefix}_wheel_link">
+		<mu1 value="1.0"/>
+		<mu2 value="1.0"/>
+		<kp value="10000000.0" />
+		<kd value="1.0" />
+		<fdir1 value="1 0 0"/>
+        <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+ 
+  </xacro:macro>
+
+</robot>

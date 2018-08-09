@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot name="agv" xmlns:xacro="http://ros.org/wiki/xacro"> 
+
+
+	<!-- ***************** -->
+	<!-- Imported elements -->
+	<!-- ***************** -->
+	
+	<!-- First we import all posible elements defined in the urdf.xacro files. All these elements are defined as macro:xacros -->
+
+	<!-- Import summit XL base elements -->
+	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_urdf.xacro" />
+  
+	<!-- Import summit XL wheels -->
+	<xacro:include filename="$(find agv_low)/urdf/wheels/agv_low_wheel_urdf.xacro" />
+    
+	<!-- Import all available sensors -->
+	<xacro:include filename="$(find agv_low)/urdf/sensors/all_sensors.urdf.xacro" />
+
+
+	<xacro:arg name="prefix" default="agv_"/>
+
+		
+    	<xacro:macro name="agv" params="prefix">
+
+		<!-- *************** -->
+		<!-- Robots Elements -->
+		<!-- *************** -->
+
+		<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
+
+		<!-- Summit XL base -->
+
+		<xacro:agv_base prefix="$(arg prefix)" />
+
+		<xacro:mecanum_wheel prefix="${prefix}front_left" angle="-1" wheel_pos="1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel prefix="${prefix}front_right" angle="1" wheel_pos="-1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel prefix="${prefix}back_left" angle="-1" wheel_pos="-1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel prefix="${prefix}back_right" angle="1" wheel_pos="1" parent="${prefix}base_link" />
+  		
+  		<!-- IMU -->
+<!--
+		<xacro:sensor_imu_hector prefix="$(arg prefix)imu" parent="$(arg prefix)base_link">
+			<origin xyz="0.48 0.0 0.338" rpy="0 0 0"/>
+		</xacro:sensor_imu_hector>
+		
+		<xacro:sensor_sick_s300 prefix="$(arg prefix)s300_front" parent="$(arg prefix)base_link" prefix_topic="front_laser">
+			<origin xyz="0.900 0.300 0.338" rpy="0 0 0"/>
+		</xacro:sensor_sick_s300>
+		
+		<xacro:sensor_sick_s300 prefix="$(arg prefix)s300_back" parent="$(arg prefix)base_link" prefix_topic="back_laser">
+			<origin xyz="0.060 -0.349 0.338" rpy="0 0 3.1416"/>
+		</xacro:sensor_sick_s300>
+
+
+		<xacro:sensor_asus_xtion_pro prefix="$(arg prefix)xtion" parent="$(arg prefix)base_link" > -->
+			<!--<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" /> -->
+<!--			<origin xyz="0.900 -0.0235 0.35075" rpy="0 1.571 -3.1416" />	
+		</xacro:sensor_asus_xtion_pro>
+
+		<xacro:sensor_asus_xtion_pro_stand prefix="$(arg prefix)xtion_stand" parent="$(arg prefix)base_link" > -->
+			<!--<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" /> -->
+<!--			<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" />	
+		</xacro:sensor_asus_xtion_pro_stand>
+		-->
+   	</xacro:macro>
+   
+   <!-- Gazebo ros control pluggins -->
+
+   <!-- <xacro:ros_control /> -->
+	
+   <!-- <xacro:ros_force_based_move prefix="$(arg prefix)"/> -->
+   <xacro:planar_move prefix="$(arg prefix)"/>
+   <xacro:agv prefix="$(arg prefix)"/>
+
+   
+   <!--<xacro:xtion_stand parent="agv_base_link" tilting_angle="0" /> -->
+
+
+</robot>
+

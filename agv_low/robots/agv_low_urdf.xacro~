@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot name="agv" xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+
+
+	<!-- ***************** -->
+	<!-- Imported elements -->
+	<!-- ***************** -->
+	
+	<!-- First we import all posible elements defined in the urdf.xacro files. All these elements are defined as macro:xacros -->
+
+	<!-- Import summit XL base elements -->
+	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_urdf.xacro" />
+  
+	<!-- Import summit XL wheels -->
+	<xacro:include filename="$(find agv_low)/urdf/wheels/agv_low_wheel_urdf.xacro" />
+    
+	<!-- Import all available sensors -->
+	<!--<xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" /> -->
+  
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	  
+
+	<!-- Flag to select the high or low quality model -->
+	<xacro:property name="hq" value="true" />
+
+	<xacro:arg name="prefix" default="agv_"/>
+
+		
+    <xacro:macro name="agv" params="prefix hq">
+
+		<!-- *************** -->
+		<!-- Robots Elements -->
+		<!-- *************** -->
+
+		<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
+
+		<!-- Summit XL base -->
+		<xacro:agv_base prefix="$(arg prefix)" hq="${hq}" />
+
+		<xacro:mecanum_wheel prefix="${prefix}front_left" angle="1" wheel_pos="1" />
+  		<xacro:mecanum_wheel prefix="${prefix}front_right" angle="-1" wheel_pos="-1" />
+  		<xacro:mecanum_wheel prefix="${prefix}back_left" angle="1" wheel_pos="-1" />
+  		<xacro:mecanum_wheel prefix="${prefix}back_right" angle="-1" wheel_pos="1" />
+  
+		
+   </xacro:macro>
+   
+   <!-- Gazebo ros control pluggins -->
+   <xacro:ros_control />
+
+   <xacro:agv prefix="$(arg prefix)" hq="true"/>
+	
+</robot>
+

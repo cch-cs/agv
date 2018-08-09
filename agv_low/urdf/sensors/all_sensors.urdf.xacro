@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot name="all_sensors" xmlns:xacro="http://ros.org/wiki/xacro">
+	
+	<!-- This file unifies all sensors that can be used on simulation, defined as xacro:macros -->
+	
+  <!-- GPS -->
+  <xacro:include filename="$(find agv_low)/urdf/sensors/gps.urdf.xacro" />
+
+  <!-- Imu hector -->
+  <xacro:include filename="$(find agv_low)/urdf/sensors/imu_hector_plugin.urdf.xacro" />
+
+  <!-- Asus Xtion PRO -->
+  <!--xacro:include filename="$(find agv_low)/urdf/sensors/xtion_xtended_stand.urdf.xacro" /--> 
+  <xacro:include filename="$(find agv_low)/urdf/sensors/asus_xtion_pro.urdf.xacro" />
+  <xacro:include filename="$(find agv_low)/urdf/sensors/asus_xtion_pro_stand.xacro" />
+
+  <!-- Sick s300 -->
+  <xacro:include filename="$(find agv_low)/urdf/sensors/sick_s300.urdf.xacro" />
+
+
+  
+</robot>
