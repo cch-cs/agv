@@ -10,19 +10,6 @@
 
   <xacro:macro name="sensor_asus_xtion_pro_stand" params="prefix parent *origin">
 
-<!--   <joint name="${prefix}_stand_footprint_joint" type ="fixed">
-    <xacro:insert_block name="origin" />
-    <parent link="${parent}"/>
-    <child link="${prefix}_stand_footprint"/>
-   </joint>
-   <link name="${prefix}_stand_footprint">
-    <visual>
-     <origin xyz="0 0 0" rpy="0 0 0" />
-     <geometry>
-      <box size="0.001 0.001 0.001" />
-     </geometry>
-    </visual>
-   </link> -->
    <joint name="${prefix}_stand_joint" type ="fixed">
     <xacro:insert_block name="origin" />
     <parent link="${parent}"/>
@@ -34,8 +21,9 @@
         <!--<origin xyz="-0.09 0.020715 0.0164" rpy="${-M_PI/2} -${M_PI} ${-M_PI/2}"/> -->
 		<origin xyz="0 0 0" rpy="${M_PI/2} 0 ${M_PI/2}"/>
         <geometry>
-          <mesh filename="package://agv_low/meshes/sensors/base_new.dae" scale="${asus_xtion_scale} ${asus_xtion_scale} ${asus_xtion_scale}"/>
+          <mesh filename="package://agv_low/meshes/sensors/base_new.stl" scale="${asus_xtion_scale} ${asus_xtion_scale} ${asus_xtion_scale}"/>
         </geometry>
+	<material name="black"/>
       </visual>
       <collision>
         <!-- <origin xyz="-0.090 0.020715 0.016400" rpy="0 0 0" /> -->
@@ -52,5 +40,9 @@
           izz="0.00" />
       </inertial>
     </link>
+    <gazebo reference = "${prefix}_base">
+     <material>Gazebo/Black</material>
+     <turnGravityOff>false</turnGravityOff>
+    </gazebo>
   </xacro:macro>
 </robot>

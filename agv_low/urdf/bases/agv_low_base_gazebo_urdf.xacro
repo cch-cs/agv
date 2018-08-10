@@ -48,8 +48,8 @@
   <xacro:macro name="planar_move" params="prefix">
 		<gazebo>
 	    <plugin name="planar_move" filename="libgazebo_ros_planar_move.so">
-	      <commandTopic>agv/cmd_vel</commandTopic>  
-	      <odometryTopic>agv/odom</odometryTopic>
+	      <commandTopic>cmd_vel</commandTopic>  
+	      <odometryTopic>odom</odometryTopic>
 	      <odometryFrame>${prefix}odom</odometryFrame>
 	      <odometryRate>50.0</odometryRate>
 	      <robotBaseFrame>${prefix}base_footprint</robotBaseFrame>

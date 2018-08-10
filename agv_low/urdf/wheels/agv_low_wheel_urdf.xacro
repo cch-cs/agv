@@ -47,7 +47,8 @@
             <geometry>     
               <mesh filename="package://agv_low/meshes/Radbefestigung mit Motor-Getrieb (LVA33)_MIR_wheels.stl" />
             </geometry>			  
-	  </xacro:unless>	         
+			 </xacro:unless>
+	  	   <material name="grey"/>     	      
       </visual>
 
       <collision>
@@ -64,7 +65,7 @@
       </inertial>
     </link>
     
-    <!-- Transmission is important to link the joints and the controller (see summit_xl_control/config/summit_xl_control.yaml)-->
+    <!-- Transmission is important to link the joints and the controller-->
     <transmission name="${prefix}_wheel_joint_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}_wheel_joint" >
@@ -81,13 +82,10 @@
 		<kp value="10000000.0" />
 		<kd value="1.0" />
 		<fdir1 value="1 0 0"/>
-        <turnGravityOff>false</turnGravityOff>
+		<material>Gazebo/Grey</material>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
-    <gazebo reference="${prefix}base_link">
-     <material>Gazebo/Black</material>
-     <turnGravityOff>false</turnGravityOff>
-    </gazebo>
- 
+     
   </xacro:macro>
 
 </robot>

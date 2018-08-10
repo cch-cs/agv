@@ -29,6 +29,7 @@
 			<geometry>
 				<mesh filename="package://agv_low/meshes/Plattform Baugruppe_20171217_WO_wheels_collision_as_original.stl"/>
 			</geometry>
+			<material name="white"/>
 		</visual>
 		<collision>
 			<origin xyz="0 0 0.308" rpy="-1.57 0 0"/>
