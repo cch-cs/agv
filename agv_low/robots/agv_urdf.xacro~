@@ -17,6 +17,9 @@
 	<!-- Import all available sensors -->
 	<xacro:include filename="$(find agv_low)/urdf/sensors/all_sensors.urdf.xacro" />
 
+	<!-- Import all colors -->
+	<xacro:include filename="$(find agv_low)/urdf/materials.xacro" />
+
 
 	<xacro:arg name="prefix" default="agv_"/>
 
@@ -32,12 +35,12 @@
 		<!-- Summit XL base -->
 
 		<xacro:agv_base prefix="$(arg prefix)" />
-
+<!--
 		<xacro:mecanum_wheel prefix="${prefix}front_left" angle="-1" wheel_pos="1" parent="${prefix}base_link" />
   		<xacro:mecanum_wheel prefix="${prefix}front_right" angle="1" wheel_pos="-1" parent="${prefix}base_link" />
   		<xacro:mecanum_wheel prefix="${prefix}back_left" angle="-1" wheel_pos="-1" parent="${prefix}base_link" />
   		<xacro:mecanum_wheel prefix="${prefix}back_right" angle="1" wheel_pos="1" parent="${prefix}base_link" />
-  		
+  -->		
   		<!-- IMU -->
 <!--
 		<xacro:sensor_imu_hector prefix="$(arg prefix)imu" parent="$(arg prefix)base_link">
@@ -52,17 +55,18 @@
 			<origin xyz="0.060 -0.349 0.338" rpy="0 0 3.1416"/>
 		</xacro:sensor_sick_s300>
 
-
-		<xacro:sensor_asus_xtion_pro prefix="$(arg prefix)xtion" parent="$(arg prefix)base_link" > -->
+-->
+		<xacro:sensor_asus_xtion_pro prefix="$(arg prefix)xtion" parent="$(arg prefix)base_link" >
 			<!--<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" /> -->
-<!--			<origin xyz="0.900 -0.0235 0.35075" rpy="0 1.571 -3.1416" />	
+			<!--<origin xyz="0.900 -0.0235 0.35075" rpy="0 1.571 -3.1416" /> -->
+			<origin xyz="0.918 -0.0015 0.37225" rpy="0 -1.571 0" />	
 		</xacro:sensor_asus_xtion_pro>
-
-		<xacro:sensor_asus_xtion_pro_stand prefix="$(arg prefix)xtion_stand" parent="$(arg prefix)base_link" > -->
+		
+		<xacro:sensor_asus_xtion_pro_stand prefix="$(arg prefix)xtion_stand" parent="$(arg prefix)base_link" >
 			<!--<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" /> -->
-<!--			<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" />	
+			<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" />	
 		</xacro:sensor_asus_xtion_pro_stand>
-		-->
+
    	</xacro:macro>
    
    <!-- Gazebo ros control pluggins -->
@@ -70,9 +74,10 @@
    <!-- <xacro:ros_control /> -->
 	
    <!-- <xacro:ros_force_based_move prefix="$(arg prefix)"/> -->
-   <xacro:planar_move prefix="$(arg prefix)">
+<!--
+   <xacro:planar_move prefix="$(arg prefix)"/>
+-->
    <xacro:agv prefix="$(arg prefix)"/>
-
    
    <!--<xacro:xtion_stand parent="agv_base_link" tilting_angle="0" /> -->
 

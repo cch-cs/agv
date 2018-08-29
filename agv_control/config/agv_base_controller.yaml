@@ -1,0 +1,38 @@
+base_controller:
+  pid_gains:
+    agv_front_left_wheel_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_front_left_caster_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_front_right_wheel_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_front_right_caster_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_back_left_wheel_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_back_left_caster_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_back_right_wheel_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    agv_back_right_caster_joint_collision: {p: 100.0, i: 0.0, d: 1.0}
+    
+  type: steered_wheel_base_controller/SteeredWheelBaseController
+
+  base_frame: agv_base_footprint
+
+  linear_speed_limit: 1.5
+  linear_acceleration_limit: 2.5
+  linear_deceleration_limit: 2.5
+
+  yaw_speed_limit: 3.0
+  yaw_acceleration_limit: 3.2
+  yaw_deceleration_limit: 3.2
+  
+  cmd_vel_timeout: 0.0  # disabled, as it is on the real platform
+
+  wheels:
+    - steering_joint: agv_front_left_caster_joint_collision
+      axle_joint: agv_front_left_wheel_joint_collision
+      diameter: 0.206
+    - steering_joint: agv_front_right_caster_joint_collision
+      axle_joint: agv_front_right_wheel_joint_collision
+      diameter: 0.206
+    - steering_joint: agv_back_left_caster_joint_collision
+      axle_joint: agv_back_left_wheel_joint_collision
+      diameter: 0.206
+    - steering_joint: agv_back_right_caster_joint_collision
+      axle_joint: agv_back_right_wheel_joint_collision
+      diameter: 0.206
