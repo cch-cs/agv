@@ -52,7 +52,7 @@
   		<xacro:mecanum_wheel_visual prefix="${prefix}back_right" angle="1" wheel_pos="1" parent="${prefix}base_link" />
 	
   		<!-- IMU -->
-<!--
+
 		<xacro:sensor_imu_hector prefix="$(arg prefix)imu" parent="$(arg prefix)base_link">
 			<origin xyz="0.48 0.0 0.338" rpy="0 0 0"/>
 		</xacro:sensor_imu_hector>
@@ -66,16 +66,16 @@
 		</xacro:sensor_sick_s300>
 
 
-		<xacro:sensor_asus_xtion_pro prefix="$(arg prefix)xtion" parent="$(arg prefix)base_link" > -->
+		<xacro:sensor_asus_xtion_pro prefix="$(arg prefix)xtion" parent="$(arg prefix)base_link" >
 			<!--<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" /> -->
-<!--			<origin xyz="0.87852 -0.0015 0.36875" rpy="0 -1.571 0" />	
+			<origin xyz="0.87852 -0.0015 0.36875" rpy="0 -1.571 0" />	
 		</xacro:sensor_asus_xtion_pro>
 
 		<xacro:sensor_asus_xtion_pro_stand prefix="$(arg prefix)xtion_stand" parent="$(arg prefix)base_link" > -->
 			<!--<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" /> -->
-<!--			<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" />	
+			<origin xyz="0.900 -0.0235 0.338" rpy="0 0 0" />	
 		</xacro:sensor_asus_xtion_pro_stand>
--->
+
    	</xacro:macro>
    
    <!-- Gazebo ros control pluggins -->
