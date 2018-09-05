@@ -2,7 +2,7 @@
 
 <robot name="agv" xmlns:xacro="http://www.ros.org/wiki/xacro">
 	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_gazebo_urdf.xacro" />
-	<xacro:macro name="agv_low" params="prefix hq">
+	<xacro:macro name="agv_base" params="prefix">
 	
 	<link name="${prefix}base_footprint">
 		<visual>
@@ -25,15 +25,17 @@
     			<inertia ixx="2.379" ixy="0.005" ixz="0" iyy="4.190" iyz="-0.001" izz="2.553"/>
   		</inertial>
 		<visual>
-			<origin xyz="0 0 0" rpy="-1.57 0 0"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://agv_low/meshes/Plattform Baugruppe_20171217_WO_wheels_collision.stl"/>
+<!--				<mesh filename="package://agv_low/meshes/Plattform Baugruppe_20171217_WO_wheels_collision_as_original.stl"/> -->
+				<box size="1.020 0.300 0.763"/>
 			</geometry>
+			<material name="white"/>
 		</visual>
 		<collision>
-			<origin xyz="0 0 0" rpy="-1.57 0 0"/>
+			<origin xyz="-0.030 -0.0235 -0.030" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://agv_low/meshes/Plattform Baugruppe_20171217_WO_wheels_collision.stl"/>
+				<box size="1.020 0.300 0.763"/>
 			</geometry>
 		</collision>
 	</link>
