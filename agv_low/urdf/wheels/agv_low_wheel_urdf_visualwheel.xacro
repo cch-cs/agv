@@ -2,14 +2,14 @@
 
 <robot name="wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:property name="wheel_mass" value="2.166" /> <!-- 2.166 in kg-->
+  <xacro:property name="wheel_mass" value="0.6" /> <!-- 2.166 in kg-->
   <xacro:property name="pi" value="3.14159"/>
  
  
   <xacro:macro name="mecanum_inertia">
-    <inertia  ixx="0.000" ixy = "0" ixz = "0"
-              iyy="0.000" iyz = "0"
-              izz="0.000" /> 
+    <inertia  ixx="1.5" ixy = "0" ixz = "0"
+              iyy="1.5" iyz = "0"
+              izz="1.5" /> 
   </xacro:macro>
 
   <xacro:macro name="mecanum_wheel_visual" params="prefix angle wheel_pos parent">
