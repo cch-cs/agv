@@ -4,17 +4,14 @@
 
 1. Clone and build the repository in local workspace
 2. To launch the gazebo simulation of the agv :
-
 ```shell
 $ roslaunch agv_low agv_low_youbot_collisionwheel.launch
 ```
 3. To launch to position controller :
-<br><br>
 ```shell
 $ roslaunch position_controller start.launch
 ```
 4. To publish the desired pose :
-<br><br>
 ```shell
 $ rostopic pub /agv_mecanum/sp_pose geometry_msgs/PoseStamped "header: 
   seq: 0
