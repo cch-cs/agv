@@ -2,7 +2,7 @@
 
 ## Instructions
 
-1. Clone the repository into local workspace
+1. Clone and build the repository in local workspace
 2. To launch the gazebo simulation of the agv :
 <br><br>
 ```shell
