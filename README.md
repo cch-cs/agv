@@ -4,7 +4,7 @@
 
 1. Clone and build the repository in local workspace
 2. To launch the gazebo simulation of the agv :
-<br><br>
+
 ```shell
 $ roslaunch agv_low agv_low_youbot_collisionwheel.launch
 ```
