@@ -15,6 +15,10 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   urdf
   xacro
+  gazebo_ros
+  robot_state_publisher
+  youbot_gazebo_control
+  youbot_gazebo_worlds
 )
 
 ## System dependencies are found with CMake's conventions

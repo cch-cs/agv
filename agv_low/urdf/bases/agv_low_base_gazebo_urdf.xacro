@@ -7,8 +7,8 @@
     <gazebo>
       <plugin name="ros_control" filename="libgazebo_ros_control.so">
         <!--<robotNamespace>/agv_low</robotNamespace>-->
-	<robotParam>robot_description</robotParam>
-        <controlPeriod>0.001</controlPeriod>
+<!--	<robotParam>robot_description</robotParam>
+        <controlPeriod>0.001</controlPeriod> -->
 	<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       </plugin>
     </gazebo>
@@ -58,4 +58,47 @@
 	  </gazebo>
   </xacro:macro>
 
+  <xacro:macro name="fourwheel_visual_diff_drive" params="prefix">
+   	<gazebo>
+  		<plugin name="fourwheel_visual_diff_drive_controller" filename="libfourwheel_drive_visual_wheel.so">
+   			<alwaysOn>true</alwaysOn>
+    			<updateRate>10</updateRate>
+    			<frontleftJoint>${prefix}front_left_wheel_joint_visual</frontleftJoint>
+    			<frontrightJoint>${prefix}front_right_wheel_joint_visual</frontrightJoint>
+    			<backleftJoint>${prefix}back_left_wheel_joint_visual</backleftJoint>
+    			<backrightJoint>${prefix}back_right_wheel_joint_visual</backrightJoint>
+    			<wheelDiameter>0.206</wheelDiameter>
+    			<wheelTorque>20</wheelTorque>
+   			<commandTopic>cmd_vel</commandTopic>
+<!--
+   			<odometryTopic>odom</odometryTopic>
+   			<odometryFrame>odom</odometryFrame>
+-->
+   			<robotBaseFrame>agv_base_footprint</robotBaseFrame>
+<!--   			<robotNamespace>gz</robotNamespace> -->
+   		</plugin> 
+   	</gazebo>
+  </xacro:macro>
+
+
+<!--
+  <xacro:macro name="fourwheel_visual_diff_drive" params="prefix">
+   	<gazebo>
+  		<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+			<legacyMode>true</legacyMode>
+			<alwaysOn>true</alwaysOn>
+    			<updateRate>10</updateRate>
+    			<leftJoint>${prefix}front_left_wheel_joint_visual</leftJoint>
+    			<rightJoint>${prefix}front_right_wheel_joint_visual</rightJoint>
+			<wheelSeparation>0.6</wheelSeparation>
+    			<wheelDiameter>0.206</wheelDiameter>
+    			<torque>20</torque>
+   			<commandTopic>cmd_vel</commandTopic>
+   			<odometryTopic>odom</odometryTopic>
+   			<odometryFrame>odom</odometryFrame>
+   			<robotBaseFrame>agv_base_footprint</robotBaseFrame> 
+   		</plugin> 
+   	</gazebo>
+  </xacro:macro>
+-->
 </robot>

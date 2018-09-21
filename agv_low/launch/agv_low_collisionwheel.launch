@@ -18,17 +18,14 @@
     <arg name="headless" value="$(arg headless)"/>
   </include>
 
-  <!-- controller launch file -->
 
-  <include file="$(find agv_control)/launch/agv_base_controller.launch"/>
-<!--
-  <include file="$(find agv_control)/launch/joint_state_controller.launch"/>
--->
+
+
   <!-- urdf xml robot description loaded on the Parameter Server-->
-  <param name="robot_description" command="$(find xacro)/xacro '$(find agv_low)/robots/agv_urdf_youbot_collsionwheel.xacro'" /> 
+  <param name="robot_description" command="$(find xacro)/xacro '$(find agv_low)/robots/agv_urdf_collsionwheel.xacro'" /> 
 
 
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
   <!-- start robot state publisher -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
     <param name="publish_frequency" type="double" value="50.0" />

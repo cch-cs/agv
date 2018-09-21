@@ -2,7 +2,7 @@
 
 <robot name="wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:property name="wheel_mass" value="2" /> <!-- in kg-->
+  <xacro:property name="wheel_mass" value="2.166" /> <!-- in kg-->
   <xacro:property name="pi" value="3.14159"/>
 
   <xacro:property name="caster_joint_damping" value="1.0"/>
@@ -22,41 +22,28 @@
  
  
   <xacro:macro name="mecanum_inertia">
-    <inertia  ixx="0.0085" ixy = "0" ixz = "0"
-              iyy="0.0085" iyz = "0"
-              izz="0.0085" /> 
+    <inertia  ixx="0.008" ixy = "0" ixz = "0"
+              iyy="0.008" iyz = "0"
+              izz="0.010" /> 
   </xacro:macro>
 
-  <xacro:macro name="mecanum_wheel_youbot_collision" params="prefix angle parent">
+  <xacro:macro name="mecanum_wheel_youbot_collision" params="prefix angle wheel_pos parent">
   
   
     <joint name="${prefix}_caster_joint_collision" type="continuous">
       <parent link="${parent}"/>
       <child link="${prefix}_caster_link"/>
-<!--      <xacro:if value="${prefix == 'agv_front_left'}">
-      	<origin xyz="0.835 0.316 0.103" /> 
-      </xacro:if>
-      <xacro:if value="${prefix == 'agv_front_right'}">
-      	<origin xyz="0.835 -0.364 0.103" /> 
-      </xacro:if>
-      <xacro:if value="${prefix == 'agv_back_left'}">
-      	<origin xyz="0.125 0.317 0.102" /> 
-      </xacro:if>
-      <xacro:if value="${prefix == 'agv_back_right'}">
-      	<origin xyz="0.125 -0.365 0.102" />
-      </xacro:if>
--->
       <xacro:if value="${prefix == 'agv_front_left'}">
-      	<origin xyz="0.355 0.340 -0.236" /> <!-- y = 0.213 -->
+      	<origin xyz="0.835 0.316 0.103" /> <!-- y = 0.213 -->
       </xacro:if>
       <xacro:if value="${prefix == 'agv_front_right'}">
-      	<origin xyz="0.355 -0.340 -0.236" /> <!-- y = -0.261 -->
+      	<origin xyz="0.835 -0.364 0.103" /> <!-- y = -0.261 -->
       </xacro:if>
       <xacro:if value="${prefix == 'agv_back_left'}">
-      	<origin xyz="-0.355 0.341 -0.236" /> <!-- y = 0.214 -->
+      	<origin xyz="0.125 0.317 0.102" /> <!-- y = 0.214 -->
       </xacro:if>
       <xacro:if value="${prefix == 'agv_back_right'}">
-      	<origin xyz="-0.355 -0.341 -0.236" /> <!-- y = -0.262 -->
+      	<origin xyz="0.125 -0.365 0.102" /> <!-- y = -0.262 -->
       </xacro:if>
       <axis xyz="0 0 1" rpy="0 0 0" />
       <limit effort="${caster_joint_effort}" velocity="${caster_joint_velocity}"/>
@@ -84,14 +71,14 @@
   
     <link name="${prefix}_wheel_link_collision">
       <collision>
-	<origin xyz="0 0 0" rpy="0 0 0" />
+	<origin xyz="0 0 0" rpy="${pi*angle/2} 0 0" />
         <geometry>
 	 <sphere radius="0.103"/>
 <!--	  <mesh filename="package://agv_low/meshes/agv_sphere_wheel.stl"/> -->
 	</geometry>
       </collision>
 <!--      <visual>
-	<origin xyz="0 0 0" rpy="0 0 0" />
+	<origin xyz="0 0 0" rpy="${pi*angle/2} 0 0" />
         <geometry>
 	 <sphere radius="0.103"/>
 	  <mesh filename="package://agv_low/meshes/agv_sphere_wheel.stl"/>

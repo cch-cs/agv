@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="wheel_mass" value="2.166" /> <!-- in kg-->
+  <xacro:property name="pi" value="3.14159"/>
+ 
+ 
+  <xacro:macro name="mecanum_inertia">
+    <inertia  ixx="0.008" ixy = "0" ixz = "0"
+              iyy="0.008" iyz = "0"
+              izz="0.010" /> 
+  </xacro:macro>
+
+  <xacro:macro name="mecanum_wheel_collision" params="prefix angle wheel_pos parent">
+  
+  
+    <joint name="${prefix}_wheel_joint_collision" type="continuous">
+      <parent link="${parent}"/>
+      <child link="${prefix}_wheel_link_collision"/>
+      <xacro:if value="${prefix == 'agv_front_left'}">
+      	<origin xyz="0.835 0.213 0.103" />
+      </xacro:if>
+      <xacro:if value="${prefix == 'agv_front_right'}">
+      	<origin xyz="0.835 -0.261 0.103" />
+      </xacro:if>
+      <xacro:if value="${prefix == 'agv_back_left'}">
+      	<origin xyz="0.125 0.214 0.102" />
+      </xacro:if>
+      <xacro:if value="${prefix == 'agv_back_right'}">
+      	<origin xyz="0.125 -0.262 0.102" />
+      </xacro:if>
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <limit effort="100" velocity="100"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+  
+    <link name="${prefix}_wheel_link_collision">
+      <collision>
+	<origin xyz="0 0 0" rpy="${pi*angle/2} 0 0" />
+        <geometry>
+	  <mesh filename="package://agv_low/meshes/Radbefestigung mit Motor-Getrieb (LVA33)_wheels_collision.stl"/>
+	</geometry>
+      </collision>
+      <inertial>
+        <mass value="${wheel_mass}" />
+        <origin xyz="0 0 0.076" />
+        <xacro:mecanum_inertia />
+      </inertial>
+    </link>
+    
+    <!-- Transmission is important to link the joints and the controller-->
+    <transmission name="${prefix}_wheel_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_wheel_joint_collision" >
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>              
+      <actuator name="${prefix}_wheel_joint_motor">
+         <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    
+    <gazebo reference="${prefix}_wheel_link_collision">
+		<mu1 value="1.0"/>
+		<mu2 value="1.0"/>
+		<kp value="10000000.0" />
+		<kd value="1.0" />
+		<fdir1 value="1 0 0"/>
+      <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+     
+  </xacro:macro>
+
+</robot>
