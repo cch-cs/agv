@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot name="agv" xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<!-- Import summit XL base elements -->
+	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_urdf.xacro" />
+
+	<!-- Import summit XL wheels collision -->
+	<xacro:include filename="$(find agv_low)/urdf/wheels/agv_low_wheel_urdf_youbot_collision.xacro" />
+	
+	<!-- Import summit XL wheels visual -->
+	<xacro:include filename="$(find agv_low)/urdf/wheels/agv_low_wheel_urdf_visualwheel.xacro" />
+	
+	<!-- Import all available sensors -->
+	<xacro:include filename="$(find agv_low)/urdf/sensors/all_sensors.urdf.xacro" />
+	
+	<!-- Import all colors -->
+	<xacro:include filename="$(find agv_low)/urdf/materials.xacro" />
+	
+	
+	<xacro:arg name="prefix" default="agv_"/>
+	
+	<xacro:macro name="agv" params="prefix">
+		<xacro:agv_base prefix="$(arg prefix)" />
+		
+		<xacro:mecanum_wheel_youbot_collision prefix="${prefix}front_left" angle="-1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_youbot_collision prefix="${prefix}front_right" angle="1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_youbot_collision prefix="${prefix}back_left" angle="-1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_youbot_collision prefix="${prefix}back_right" angle="1" parent="${prefix}base_link" />
+
+		<xacro:mecanum_wheel_visual prefix="${prefix}front_left" angle="-1" wheel_pos="0" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_visual prefix="${prefix}front_right" angle="1" wheel_pos="1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_visual prefix="${prefix}back_left" angle="-1" wheel_pos="1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_visual prefix="${prefix}back_right" angle="1" wheel_pos="0" parent="${prefix}base_link" />
+  		
+  	</xacro:macro>
+  	
+  	<gazebo>
+  	<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so"> <!-- libdiff_drive.so -->
+		<legacyMode>true</legacyMode>
+		<alwaysOn>true</alwaysOn>
+    		<updateRate>10</updateRate>
+    		<leftJoint>agv_front_left_wheel_joint_visual</leftJoint>
+    		<rightJoint>agv_front_right_wheel_joint_visual</rightJoint>
+		<wheelSeparation>0.6</wheelSeparation>
+    		<wheelDiameter>0.206</wheelDiameter>
+    		<torque>20</torque>
+   		<commandTopic>cmd_vel</commandTopic>
+   		<odometryTopic>odom</odometryTopic>
+   		<odometryFrame>odom</odometryFrame>
+   		<robotBaseFrame>agv_base_footprint</robotBaseFrame> 
+   	</plugin> 
+   </gazebo>
+   
+   <xacro:agv prefix="$(arg prefix)"/>
+   
+</robot>
