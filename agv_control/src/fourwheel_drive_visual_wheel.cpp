@@ -50,7 +50,7 @@
  #include <algorithm>
  #include <assert.h>
  
- #include <agv_control/fourwheel_drive_visual_wheel.h>
+ #include "fourwheel_drive_visual_wheel.h"
  
  #include <ignition/math/Angle.hh>
  #include <ignition/math/Pose3.hh>
