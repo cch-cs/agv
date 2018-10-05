@@ -115,7 +115,7 @@ class PositionController(object):
 
     def atSetpointPos(self):
         #deadband = 0.025
-        deadband = 0.001
+        deadband = 0.1
         disp = False
         disp = self.lookupTransform("agv_base_footprint", "setpoint_pose")
         if disp:
@@ -184,12 +184,6 @@ class PositionController(object):
                     self.cmd.linear.x = self.control_effort_x.data
                     self.cmd.linear.y = self.control_effort_y.data
                     self.cmd.angular.z = self.control_effort_yaw.data
-                    self.pub_cmd.publish(self.cmd)
-                else :
-                    self.cmd.linear.x = 0
-                    self.cmd.linear.y = 0
-                    self.cmd.angular.z = 0
-                    #self.pid_enabled = False 
                     self.pub_cmd.publish(self.cmd)
 
     def callback_x(self, msg):

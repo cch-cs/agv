@@ -32,4 +32,4 @@ pose:
 ```
 
 ## TO DO
-Implement Velocity Controller
+Publish multiple points in the form of a trajectory
