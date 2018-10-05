@@ -141,9 +141,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
-  /home/cch-student/agvnew_ws/src/agv/agv_control/include
 )
 
 ## Declare a C++ library
