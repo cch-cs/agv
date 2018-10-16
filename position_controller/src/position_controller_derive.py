@@ -63,7 +63,7 @@ class PositionController(object):
 
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
-        self.service = rospy.Service('/agv_mecanum/enable_pos_ctrl', SetBool, self.handle_service)
+        # self.service = rospy.Service('/agv_mecanum/enable_pos_ctrl', SetBool, self.handle_service)
         self.activator_x = rospy.Publisher("/agv_mecanum/pid_x/pid_enable", Bool, queue_size=1)
         self.activator_y = rospy.Publisher("/agv_mecanum/pid_y/pid_enable", Bool, queue_size=1)
         self.activator_yaw = rospy.Publisher("/agv_mecanum/pid_yaw/pid_enable", Bool, queue_size=1)
@@ -83,12 +83,20 @@ class PositionController(object):
         self.pos_y = .0
         self.yaw = .0
         
-        self.x_prev = .0
-        self.y_prev = .0
-        self.yaw_prev = .0
-        self.time_prev = .0
+        self.x_prev = Float64()
+        self.y_prev = Float64()
+        self.yaw_prev = Float64()
+       
+        self.x_now = Float64()
+        self.y_now = Float64()
+        self.yaw_now = Float64()
 
-
+        self.x_prev.data = .0
+        self.y_prev.data = .0
+        self.yaw_prev.data = .0
+        self.prev_time = rospy.Time()
+        self.delta_t = rospy.Duration()
+  
         self.sp_pos_x = Float64()
         self.sp_pos_y = Float64()
         self.sp_yaw = Float64()
@@ -107,7 +115,7 @@ class PositionController(object):
         '''
         @brief destructor
         '''
-        self.handle_service(False)
+        #self.handle_service(False)
         rospy.loginfo("Stop position controller")
 
 
@@ -182,15 +190,38 @@ class PositionController(object):
                 self.pub_pid_yaw_state.publish(self.yaw)
 
                 if not self.atSetpointYaw():
+                    print "if not self.atSetPointYaw"
+                    # time_now = (rospy.Time.to_nsec(rospy.Time.now()))/1e9
+                    if (not (self.prev_time == 0)):
+                        self.delta_t = rospy.Time.now() - self.prev_time
+                        self.prev_time = rospy.Time.now()
+                        if (self.delta_t == 0):
+                            rospy.logerr("delta_t is 0, skipping this loop. Possible overloaded CPU at time %s"%rospy.Time.now())
+                            return
+                    else:
+                        rospy.loginfo("prev_time is 0, doing nothing")
+                        self.prev_time = rospy.Time.now()
+                        return
+                    
+                    # print "delta_t = ", self.delta_t.to_sec()
+                    print "yaw_prev = ", self.yaw_prev.data
+                    print "control_effort_yaw = ", self.control_effort_yaw.data
+                    print "yaw error = ", self.control_effort_yaw.data - self.yaw_prev.data
+                    print "cmd.angular.z = ", (self.control_effort_yaw.data- self.yaw_prev.data) / (self.delta_t.to_sec())
+                    self.yaw_now.data = self.control_effort_yaw.data
                     self.cmd.linear.x = 0
-                    self.cmd.angular.z = self.control_effort_yaw.data 
+                    self.cmd.linear.y = 0
+                    self.cmd.angular.z = (self.yaw_now.data - self.yaw_prev.data) / (self.delta_t.to_sec())
                     self.pub_cmd.publish(self.cmd)
-
+                    self.yaw_prev.data = self.yaw_now.data
+                    
                 elif not self.atSetpointPos():
+                    # print "if not self.atSetPointPos"
                     self.cmd.linear.x = self.control_effort_x.data
                     self.cmd.linear.y = self.control_effort_y.data
                     self.cmd.angular.z = self.control_effort_yaw.data
                     self.pub_cmd.publish(self.cmd)
+
                 else :
                     self.cmd.linear.x = 0
                     self.cmd.linear.y = 0
@@ -206,27 +237,6 @@ class PositionController(object):
 
     def callback_yaw(self, msg):
         self.control_effort_yaw = msg
-
-    def handle_service(self, req):
-        rate = rospy.Rate(25)
-        #check if flag is toggled
-        if req.data != self.pid_enabled:
-            # toggle PID controller to prevent integration
-            # dirtyfix: for loop secures connection between sub and pub
-            for i in range(1, 5):
-                self.activator_x.publish(req.data)
-                self.activator_y.publish(req.data)
-                self.activator_yaw.publish(req.data)
-                rate.sleep()
-            # set controll effort equal zero
-            self.cmd.linear.x = 0
-            self.cmd.linear.y = 0
-            self.cmd.angular.z = 0
-            self.pub_cmd.publish(self.cmd)
-            self.pid_enabled = req.data
-            return SetBoolResponse(True, "Positioncontroller set to {}".format(req.data))
-        return SetBoolResponse(True, "Positioncontroller was set to {}".format(req.data))
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = __doc__)
