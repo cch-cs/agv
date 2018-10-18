@@ -42,12 +42,16 @@ class trajectoryPlanner(object):
         rospy.sleep(0.5)
 
     def broadcast(self, x , y, yaw):
-        # t = rospy.Time.now().to_sec() * math.pi
-        #quat = tf.transformations.quaternion_from_euler(0.0, 0.0, yaw)
+        yaw = yaw * math.pi / 180.0
+        quat = tf.transformations.quaternion_from_euler(0.0, 0.0, yaw)
         #print x, y, quat 
         
         self.setpoint.pose.position.x = x
         self.setpoint.pose.position.y = y
+        self.setpoint.pose.orientation.x = quat[0]
+        self.setpoint.pose.orientation.y = quat[1]
+        self.setpoint.pose.orientation.z = quat[2]
+        self.setpoint.pose.orientation.w = quat[3]
         #self.setpoint.header.stamp = rospy.Time.now()
         #print self.setpoint
         self.tr_pub.publish(self.setpoint)
@@ -65,12 +69,14 @@ if __name__ == "__main__":
         tp = trajectoryPlanner(rospy.get_name())
         rate = rospy.Rate(args.rate)
         i = 0
-        x = [1.0,2.0,3.0,4.0,5.0]
-        y = [2.0,2.0,3.0,3.0,3.0]
+        x = [1.0, 1.0, 1.5, 1.5, 2.0, 2.0, 2.5, 2.5, 3.0, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0]
+        y = [2.0, 2.0, 2.5, 2.5, 3.0, 3.0, 3.5, 3.5, 4.0, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.0, 8.0]
+        #yaw = [0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 10.0, 10.0, 10.0, 10.0, 20.0, 20.0, 20.0, 20.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+        yaw = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 40.0 ]
 
         while not rospy.is_shutdown():
             if (i <= len(x) - 1):
-                tp.broadcast(x[i],y[i],0.0)
+                tp.broadcast(x[i],y[i],yaw[i])
             #tp.tr_pub.publish(tp.setpoint)
             # print i
                 i += 1

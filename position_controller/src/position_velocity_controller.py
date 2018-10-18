@@ -62,6 +62,7 @@ class PositionController(object):
         '''
 
         self.tfBuffer = tf2_ros.Buffer()
+        self.transformer = tf.Transformer(True,rospy.Duration(10))
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
         self.service = rospy.Service('/agv_mecanum/enable_pos_ctrl', SetBool, self.handle_service)
         self.activator_x = rospy.Publisher("/agv_mecanum/pid_x/pid_enable", Bool, queue_size=1)
@@ -70,19 +71,19 @@ class PositionController(object):
         self.sub_pid_x_effort = rospy.Subscriber("/agv_mecanum/pid_x/control_effort", Float64, self.callback_x)
         self.sub_pid_y_effort = rospy.Subscriber("/agv_mecanum/pid_y/control_effort", Float64, self.callback_y)
         self.sub_pid_yaw_effort = rospy.Subscriber("/agv_mecanum/pid_yaw/control_effort", Float64, self.callback_yaw)
-        self.sub_pid_vel_effort = rospy.Subscriber("/agv_mecanum/pid_vel/control_effort", Float64, self.callback_vel)
+        self.sub_pid_yawDot_effort = rospy.Subscriber("/agv_mecanum/pid_yawDot/control_effort", Float64, self.callback_yawDot)
         self.pub_pid_x_state = rospy.Publisher("/agv_mecanum/pid_x/state", Float64, queue_size=1)
         self.pub_pid_y_state = rospy.Publisher("/agv_mecanum/pid_y/state", Float64, queue_size=1)
         self.pub_pid_yaw_state = rospy.Publisher("/agv_mecanum/pid_yaw/state", Float64, queue_size=1)
-        self.pub_pid_vel_state = rospy.Publisher("/agv_mecanum/pid_vel/state", Float64, queue_size=1)
+        self.pub_pid_yawDot_state = rospy.Publisher("/agv_mecanum/pid_yawDot/state", Float64, queue_size=1)
         self.pub_pid_x_setpoint = rospy.Publisher("/agv_mecanum/pid_x/setpoint", Float64, queue_size=1)
         self.pub_pid_y_setpoint = rospy.Publisher("/agv_mecanum/pid_y/setpoint", Float64, queue_size=1)
         self.pub_pid_yaw_setpoint = rospy.Publisher("/agv_mecanum/pid_yaw/setpoint", Float64, queue_size=1)
-        self.pub_pid_vel_setpoint = rospy.Publisher("/agv_mecanum/pid_vel/setpoint", Float64, queue_size=1)
+        self.pub_pid_yawDot_setpoint = rospy.Publisher("/agv_mecanum/pid_yawDot/setpoint", Float64, queue_size=1)
         self.pub_cmd = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
-        self.sub_cmd = rospy.Subscriber("/cmd_vel", Twist, self.callback_state_vel)
-        self.pub_cmd_velocity = rospy.Publisher("/velocity", Twist, queue_size=1)
-        self.sub_cmd_velocity = rospy.Subscriber("/velocity", Twist, self.callback_state_velocity)
+        # self.sub_cmd = rospy.Subscriber("/cmd_vel", Twist, self.callback_state_vel)
+        self.pub_cmd_vel_controlled = rospy.Publisher("/cmd_vel_controlled", Twist, queue_size=1)
+        # self.sub_cmd_vel_controlled = rospy.Subscriber("/cmd_vel_controlled", Twist, self.callback_state_velocity)
 
         self.cmd = Twist()
         self.pos_x = .0
@@ -91,8 +92,8 @@ class PositionController(object):
         
         # prototype
         self.ref_vel = Twist()
-        self.ref_vel.liinear.x = 0.5
-        self.ref_vel.liinear.y = 0.5
+        # self.ref_vel.linear.x = 0.0
+        # self.ref_vel.liinear.y = 0.0
         self.ref_vel.angular.z = 0.5
 
 
@@ -102,7 +103,9 @@ class PositionController(object):
         self.control_effort_x = Float64()
         self.control_effort_y = Float64()
         self.control_effort_yaw = Float64()
-        self.state_vel = Float64()
+        self.control_effort_yawDot = Float64()
+        
+        self.state_yawDot = Twist()
 
         self.pid_enabled = True
 
@@ -126,14 +129,21 @@ class PositionController(object):
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             return False
 
-
-    def atSetpointVel(self):
+    def lookupTwist(self, tracked, obsever):
+        try:
+            # Change the averaging time value to Debug
+            frame_vel = self.transformer.lookupTwist(tracked, obsever, rospy.Time.now(), rospy.Duration(0.5))
+            return frame_vel
+        except tf.Exception:
+            return false
+ 
+    def atSetpointyawDot(self):
         deadband = 0.001
-        disp = False
-        state_vel = self.state_vel
-        ref_vel = self.ref_vel
+        disp_vel = False
+        disp_vel = self.lookupTwist("agv_base_footprint","odom")
+        ref_vel = self.ref_vel.angular.z
         if disp:
-            if ref_vel - state_vel <= deadband:
+            if ref_vel - disp_vel.angular.z <= deadband:
                 return True
             else:
                 return False
@@ -182,6 +192,7 @@ class PositionController(object):
             
             setpoint = self.lookupTransform("agv_base_footprint", "setpoint_pose")
             trans = self.lookupTransform("setpoint_pose", "agv_base_footprint")
+            trans_vel = self.lookupTwist("agv_base_footprint", "odom")
             
             if setpoint and trans:
                 #setpoint
@@ -189,7 +200,7 @@ class PositionController(object):
                 self.pub_pid_x_setpoint.publish(0)
                 self.pub_pid_y_setpoint.publish(0)
                 self.pub_pid_yaw_setpoint.publish(0)
-                self.pub_pid_vel_setpoint.publish(0)
+                self.pub_pid_yawDot_setpoint.publish(0)
 
                 #trans
                 
@@ -202,11 +213,9 @@ class PositionController(object):
                 self.pub_pid_x_state.publish(self.pos_x)
                 self.pub_pid_y_state.publish(self.pos_y)
                 self.pub_pid_yaw_state.publish(self.yaw)
-                self.pub_pid_vel_state.publish(self.state_velocity.data)
+                #self.pub_pid_yawDot_state.publish(self.state_velocity.data)
 
-                if not self.atSetpointVel():    
-                    self.pub_cmd_velocity(self.control_effort_vel.data)                 
-                elif not self.atSetpointYaw():
+                if not self.atSetpointYaw():
                     self.cmd.linear.x = 0
                     self.cmd.linear.y = 0
                     self.cmd.angular.z = self.control_effort_yaw.data
@@ -223,8 +232,8 @@ class PositionController(object):
                     #self.pid_enabled = False 
                     self.pub_cmd.publish(self.cmd)
 
-    def callback_state_velocity(self, msg):
-        self.state_velocity = msg
+    #def callback_state_velocity(self, msg):
+        #self.state_velocity = msg
 
     def callback_state_vel(self, msg):
         self.state_vel = msg
