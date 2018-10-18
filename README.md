@@ -30,6 +30,10 @@ pose:
     z: 0.99749499
     w: 0.0707372"
 ```
+5. To execute a sample trajectory :
+```shell
+rosrun position_controller trajectory_planner.py
+```
 
 ## TO DO
-Publish multiple points in the form of a trajectory
+Implement Cascaded Velocity Control (tf.lookupTwist())
