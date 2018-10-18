@@ -183,6 +183,7 @@ class PositionController(object):
 
                 if not self.atSetpointYaw():
                     self.cmd.linear.x = 0
+                    self.cmd.linear.y = 0
                     self.cmd.angular.z = self.control_effort_yaw.data 
                     self.pub_cmd.publish(self.cmd)
 
