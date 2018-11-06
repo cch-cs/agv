@@ -4,13 +4,14 @@
   <!-- these are the arguments you can pass this launch file, for example paused:=true -->
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
-  <arg name="gui" default="true"/>
+  <arg name="gui" default="false"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/> 
   											
 
   <!-- We resume the logic in empty_world.launch -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- arg name="world_name" value="worlds/willowgarage.world"/-->
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -39,7 +40,7 @@
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 	args="-urdf -model agv -param robot_description"/> 
 	<!-- rviz file launch -->
-  <!-- <node type="rviz" name="agv_rviz" pkg="rviz" args ="-d $(find agv_low)/rviz/agv.rviz" /> -->
+  <node type="rviz" name="agv_rviz" pkg="rviz" args ="-d $(find agv_low)/rviz/move_base.rviz" /> 
 
 
 </launch>

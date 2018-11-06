@@ -1,4 +1,4 @@
-# move_base ROADMAP
+# base_local_planner ROADMAP
 
 ## move_base.cpp
 
@@ -143,7 +143,7 @@
     return best;
   }
 
-# trajectory_planner.h
+## trajectory_planner.h
 366- inline double computeNewVelocity(double vg, double vi, double a_max, double dt){
         if((vg - vi) >= 0) {
           return std::min(vg, vi + a_max * dt);
@@ -151,3 +151,78 @@
         return std::max(vg, vi - a_max * dt);
       }
 
+# dwa_local_planner ROADMAP
+
+## dwa_planner_ros.cpp
+105- l_plan_pub_ = private_nh.advertise<nav_msgs::Path>("local_plan", 1);
+
+108- costmap_ros_->getRobotPose(current_pose_);
+
+115-  //create the actual planner that we'll use.. it'll configure itself from the parameter server
+      dp_ = boost::shared_ptr<DWAPlanner>(new DWAPlanner(name, &planner_util_));
+
+120-  odom_helper_.setOdomTopic( odom_topic_ );
+
+# move_base.cpp
+
+401- bool MoveBase::makePlan(const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan){
+}
+
+474- geometry_msgs::PoseStamped global_pose;
+    if(!getRobotPose(global_pose, planner_costmap_ros_)) {
+
+480- const geometry_msgs::PoseStamped& start = global_pose;
+
+529- geometry_msgs::PoseStamped MoveBase::goalToGlobalFrame(const geometry_msgs::PoseStamped& goal_pose_msg){
+
+538- try{
+      tf_.transform(goal_pose_msg, global_pose, global_frame);
+    }
+}
+
+639- void MoveBase::executeCb(const move_base_msgs::MoveBaseGoalConstPtr& move_base_goal)
+  {
+
+649- planner_goal_ = goal;
+
+654- current_goal_pub_.publish(goal);
+
+  }
+
+784- double MoveBase::distance(const geometry_msgs::PoseStamped& p1, const geometry_msgs::PoseStamped& p2)
+  {
+    return hypot(p1.pose.position.x - p2.pose.position.x, p1.pose.position.y - p2.pose.position.y);
+  }
+
+789- bool MoveBase::executeCycle(geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& global_plan){
+    boost::recursive_mutex::scoped_lock ecl(configuration_mutex_);
+    //we need to be able to publish velocity commands
+    geometry_msgs::Twist cmd_vel;
+
+    //update feedback to correspond to our curent position
+    geometry_msgs::PoseStamped global_pose;
+    getRobotPose(global_pose, planner_costmap_ros_);
+    const geometry_msgs::PoseStamped& current_position = global_pose;
+
+858- switch(state_){
+
+870- case CONTROLLING:
+
+874- if(tc_->isGoalReached()){
+          ROS_DEBUG_NAMED("move_base","Goal reached!");
+          resetState();
+
+899- if(tc_->computeVelocityCommands(cmd_vel)){
+          ROS_DEBUG_NAMED( "move_base", "Got a valid command from the local planner: %.3lf, %.3lf, %.3lf",
+                           cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z );
+          last_valid_control_ = ros::Time::now();
+          //make sure that we send the velocity command to the base
+          vel_pub_.publish(cmd_vel);
+
+
+
+# move_base.h
+
+180- MoveBaseActionServer* as_;
+
+      boost::shared_ptr<nav_core::BaseLocalPlanner> tc_;
