@@ -1,0 +1,10 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find aimm_control)/map/large_shop_floor_crowded.yaml" />
+
+
+<!--	<node name="map_server" pkg="map_server" type="map_server" args   "roundArena".yaml" "bmwc" "youarena" "willowinside" "bmw_shop_floor" "gmaplarge" "hectorlarge" "large_shop_floor" "large_shop_floor_crowded"/> -->
+
+</launch>
