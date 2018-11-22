@@ -13,13 +13,12 @@
 
 <param name="use_sim_time" value="true" />
 
-<arg name="map" value="labor_hectorSLAM.pgm" />
+<arg name="map" value="agv_model.yaml" />
 
-<!--
 <node name="map_server" pkg="map_server" type="map_server" args="$(find rover_navigation)/maps/$(arg map)">
     <param name="frame_id" value="map"/>
 </node>
-    -->
+   
 <!--node name="fake_localization" pkg="fake_localization" type="fake_localization" output="screen">
     <remap from="map" to="map"/>
 </node-->
