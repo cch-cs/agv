@@ -16,15 +16,15 @@
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="headless" value="$(arg headless)"/>
-    <arg name="world_name" value="ariac.world"/>
+    <arg name="world_name" value="industrial_shop_floor_new.world"/>
   </include>
 
   <!-- controller launch file -->
 
   <include file="$(find agv_control)/launch/agv_base_controller.launch"/>
-<!--
-  <include file="$(find agv_control)/launch/joint_state_controller.launch"/>
--->
+
+<!--  <include file="$(find agv_control)/launch/joint_state_controller.launch"/> -->
+
   <!-- urdf xml robot description loaded on the Parameter Server-->
   <param name="robot_description" command="$(find xacro)/xacro '$(find agv_low)/robots/agv_urdf_youbot_collsionwheel.xacro'" /> 
 
@@ -38,7 +38,7 @@
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-	args="-urdf -y 3.3 -model agv -param robot_description"/> 
+	args="-urdf -x 2.5 -y 0 -Y 1.57 -model agv -param robot_description"/> 
 	<!-- rviz file launch -->
   <!-- <node type="rviz" name="agv_rviz" pkg="rviz" args ="-d $(find agv_low)/rviz/agv.rviz" /> -->
 

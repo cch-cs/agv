@@ -85,14 +85,12 @@
    
    <!-- Gazebo ros control pluggins -->
 
-<!--    <xacro:ros_control />  -->
+   <!-- <xacro:ros_control /> -->
 	
    <!-- <xacro:ros_force_based_move prefix="$(arg prefix)"/> -->
 <!--   <xacro:planar_move prefix="$(arg prefix)"/> -->
 
    <xacro:fourwheel_visual_diff_drive prefix="$(arg prefix)"/>
-
-
 
    <xacro:agv prefix="$(arg prefix)"/>
 

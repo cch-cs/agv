@@ -3,7 +3,7 @@
 
   <gazebo>
     <plugin name="gazebo_ros_controller" filename="libgazebo_ros_control.so" />
-    	<robotNamespace>agv_steeredwheel</robotNamespace>
+    <!--	<robotNamespace>agv_steeredwheel</robotNamespace> -->
   </gazebo>
 
 </robot>
