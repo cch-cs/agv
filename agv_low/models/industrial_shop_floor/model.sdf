@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="industrial_shop_floor">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://industrial_shop_floor/meshes/industrial_shop_floor_new.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://industrial_shop_floor/meshes/industrial_shop_floor_new_collision.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
