@@ -1,6 +1,6 @@
 
-recovery_behavior_enabled: true
-clearing_rotation_allowed: true
+recovery_behavior_enabled: false
+clearing_rotation_allowed: false
 
 TrajectoryPlannerROS:
   max_vel_x: 0.5

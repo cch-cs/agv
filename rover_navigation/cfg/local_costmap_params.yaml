@@ -3,7 +3,7 @@ local_costmap:
     robot_base_frame: agv_base_link
     width: 5.0
     height: 5.0
-    update_frequency: 5.0
-    static_map: true
-    resolution: 0.01
-    
+    update_frequency: 2.0
+    static_map: false #true
+    resolution: 0.1
+    rolling_window : true    

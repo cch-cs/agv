@@ -4,8 +4,8 @@
 		name="laser_scan_matcher_node" output="screen">
 
 		<!--	Coordinate frames	-->
-		<param name="fixed_frame" value="odom"/>
-		<param name="base_frame" value="agv_base_link"/>
+		<param name="fixed_frame" value="map"/>
+		<param name="base_frame" value="agv_base_footprint"/>
 
 		<!--	Motion prediction	-->
 		<param name="use_imu" value="true"/>

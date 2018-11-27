@@ -19,6 +19,13 @@ TebLocalPlannerROS:
  acc_lim_x: 0.5
  acc_lim_theta: 1.0
 
+
+#Holonomic
+
+ max_vel_y: 0.4
+ acc_lim_y: 0.5
+  
+
  # ********************** Carlike robot parameters ********************
  min_turning_radius: 0.5        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
  wheelbase: 0.31                 # Wheelbase of our robot // TODO: set to negative value!
