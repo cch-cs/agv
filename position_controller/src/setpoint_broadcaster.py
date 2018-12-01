@@ -46,6 +46,7 @@ import tf
 import tf2_ros
 
 from geometry_msgs.msg import Twist, TransformStamped, PoseStamped
+from nav_msgs.msg import Path
 from std_msgs.msg import Float64
 # from summit_xl_a_msgs.srv import *
 
@@ -62,9 +63,9 @@ class SetpointBroadcaster(object):
         self.br = tf2_ros.TransformBroadcaster()
         # using Topic AND Service for handling single and looping pose change
         # self.service = rospy.Service('/agv_mecanum/setpoint_pose', SetPose, self.handle_service)
-        self.sub_sp = rospy.Subscriber("/agv_mecanum/sp_pose", PoseStamped, self.callbackSetpoint)
+        self.sub_sp = rospy.Subscriber("/move_base/TebLocalPlannerROS/local_plan", Path, self.callbackSetpoint)
 
-        self.setpoint = PoseStamped()
+        self.setpoint = Path()
         self.t = TransformStamped()
         self.t.header.frame_id = "odom"
         #self.t.header.frame_id = "agv_base_footprint"
@@ -89,23 +90,24 @@ class SetpointBroadcaster(object):
         time.sleep(0.5)
 
     def callbackSetpoint(self, msg):
-        self.t.transform.translation.x = msg.pose.position.x
-        self.t.transform.translation.y = msg.pose.position.y
-        self.t.transform.translation.z = msg.pose.position.z
-        self.t.transform.rotation.x = msg.pose.orientation.x
-        self.t.transform.rotation.y = msg.pose.orientation.y
-        self.t.transform.rotation.z = msg.pose.orientation.z
-        self.t.transform.rotation.w = msg.pose.orientation.w
+	for i in msg.poses: 
+		self.t.transform.translation.x = i.pose.position.x
+		self.t.transform.translation.y = i.pose.position.y
+		self.t.transform.translation.z = i.pose.position.z
+		self.t.transform.rotation.x = i.pose.orientation.x
+		self.t.transform.rotation.y = i.pose.orientation.y
+		self.t.transform.rotation.z = i.pose.orientation.z
+		self.t.transform.rotation.w = i.pose.orientation.w
 
     
     def handle_service(self, req):
-        self.t.transform.translation.x = req.pose.pose.position.x
-        self.t.transform.translation.y = req.pose.pose.position.y
-        self.t.transform.translation.z = req.pose.pose.position.z
-        self.t.transform.rotation.x = req.pose.pose.orientation.x
-        self.t.transform.rotation.y = req.pose.pose.orientation.y
-        self.t.transform.rotation.z = req.pose.pose.orientation.z
-        self.t.transform.rotation.w = req.pose.pose.orientation.w
+        self.t.transform.translation.x = req.poses.pose.pose.position.x
+        self.t.transform.translation.y = req.poses.pose.pose.position.y
+        self.t.transform.translation.z = req.poses.pose.pose.position.z
+        self.t.transform.rotation.x = req.poses.pose.pose.orientation.x
+        self.t.transform.rotation.y = req.poses.pose.pose.orientation.y
+        self.t.transform.rotation.z = req.poses.pose.pose.orientation.z
+        self.t.transform.rotation.w = req.poses.pose.pose.orientation.w
         return SetPoseResponse(True, "New setpoint set.")
 
 

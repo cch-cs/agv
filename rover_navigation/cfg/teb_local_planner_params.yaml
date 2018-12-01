@@ -24,6 +24,7 @@ TebLocalPlannerROS:
 
  max_vel_y: 0.4
  acc_lim_y: 0.5
+# weight_kinematics_nh: 1.0
   
 
  # ********************** Carlike robot parameters ********************
