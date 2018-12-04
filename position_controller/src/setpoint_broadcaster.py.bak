@@ -64,10 +64,8 @@ class SetpointBroadcaster(object):
         # using Topic AND Service for handling single and looping pose change
         # self.service = rospy.Service('/agv_mecanum/setpoint_pose', SetPose, self.handle_service)
         self.sub_sp = rospy.Subscriber("/move_base/TebLocalPlannerROS/local_plan", Path, self.callbackSetpoint)
-        self.sub_sp_transform = rospy.Subscriber("/agv_mecanum/sp_pose", PoseStamped, self.callbackSetpointTransform)
-        self.pub_sp = rospy.Publisher("/agv_mecanum/sp_pose", PoseStamped, queue_size=100)
 
-        self.setpoint = PoseStamped()
+        self.setpoint = Path()
         self.t = TransformStamped()
         self.t.header.frame_id = "odom"
         #self.t.header.frame_id = "agv_base_footprint"
@@ -92,34 +90,24 @@ class SetpointBroadcaster(object):
         time.sleep(0.5)
 
     def callbackSetpoint(self, msg):
-        for i in msg.poses: 
-            self.setpoint.pose.position.x = i.pose.position.x
-            self.setpoint.pose.position.y = i.pose.position.y
-            self.setpoint.pose.position.z = i.pose.position.z
-            self.setpoint.pose.orientation.x = i.pose.orientation.x
-            self.setpoint.pose.orientation.y = i.pose.orientation.y
-            self.setpoint.pose.orientation.z = i.pose.orientation.z
-            self.setpoint.pose.orientation.w = i.pose.orientation.w
-            self.pub_sp.publish(self.setpoint)
-            
-    def callbackSetpointTransform(self, msg):
-        self.t.transform.translation.x = msg.pose.position.x
-        self.t.transform.translation.y = msg.pose.position.y
-        self.t.transform.translation.z = msg.pose.position.z
-        self.t.transform.rotation.x = msg.pose.orientation.x
-        self.t.transform.rotation.y = msg.pose.orientation.y
-        self.t.transform.rotation.z = msg.pose.orientation.z
-        self.t.transform.rotation.w = msg.pose.orientation.w
-        
+	for i in msg.poses: 
+		self.t.transform.translation.x = i.pose.position.x
+		self.t.transform.translation.y = i.pose.position.y
+		self.t.transform.translation.z = i.pose.position.z
+		self.t.transform.rotation.x = i.pose.orientation.x
+		self.t.transform.rotation.y = i.pose.orientation.y
+		self.t.transform.rotation.z = i.pose.orientation.z
+		self.t.transform.rotation.w = i.pose.orientation.w
+
     
     def handle_service(self, req):
-        self.t.transform.translation.x = req.pose.pose.position.x
-        self.t.transform.translation.y = req.pose.pose.position.y
-        self.t.transform.translation.z = req.pose.pose.position.z
-        self.t.transform.rotation.x = req.pose.pose.orientation.x
-        self.t.transform.rotation.y = req.pose.pose.orientation.y
-        self.t.transform.rotation.z = req.pose.pose.orientation.z
-        self.t.transform.rotation.w = req.pose.pose.orientation.w
+        self.t.transform.translation.x = req.poses.pose.pose.position.x
+        self.t.transform.translation.y = req.poses.pose.pose.position.y
+        self.t.transform.translation.z = req.poses.pose.pose.position.z
+        self.t.transform.rotation.x = req.poses.pose.pose.orientation.x
+        self.t.transform.rotation.y = req.poses.pose.pose.orientation.y
+        self.t.transform.rotation.z = req.poses.pose.pose.orientation.z
+        self.t.transform.rotation.w = req.poses.pose.pose.orientation.w
         return SetPoseResponse(True, "New setpoint set.")
 
 
@@ -132,7 +120,7 @@ class SetpointBroadcaster(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = __doc__)
     # Accept control rate. Default is 20 hz.
-    parser.add_argument("--rate", help="Broadcast rate", type=float, default=5.0)
+    parser.add_argument("--rate", help="Broadcast rate", type=float, default=20.0)
     args, unknown = parser.parse_known_args()
 
     try:
@@ -148,4 +136,3 @@ if __name__ == "__main__":
 
     except rospy.ROSInterruptException:
         pass
-

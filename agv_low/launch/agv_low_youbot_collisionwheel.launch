@@ -9,15 +9,17 @@
   <arg name="debug" default="false"/> 
   											
 
-  <!-- We resume the logic in empty_world.launch -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <!--arg name="world_name" value="$(find agv_low)/worlds/agv_demo/model.config"/> -->
+  <!-- We resume the logic in agv_empty_world.launch. We remap gazebo to subscribe to topic /agv_mecanuum/cmd_vel --> 
+  <include file="$(find rover_navigation)/launch/agv_empty_world.launch"> 
+
+   <!-- include file="$(find gazebo_ros)/launch/empty_world.launch"--> 
+  
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="headless" value="$(arg headless)"/>
-    <remap from="cmd_vel" to="agv_mechanum/cmd_vel"/>
+    
   </include>
 
   <!-- controller launch file -->

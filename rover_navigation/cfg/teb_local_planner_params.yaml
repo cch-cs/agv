@@ -22,9 +22,10 @@ TebLocalPlannerROS:
 
 #Holonomic
 
- max_vel_y: 0.4
- acc_lim_y: 0.5
+# max_vel_y: 0.4
+# acc_lim_y: 0.5
 # weight_kinematics_nh: 1.0
+ min_obstacle_dist: 2.0
   
 
  # ********************** Carlike robot parameters ********************
@@ -36,8 +37,8 @@ TebLocalPlannerROS:
  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
    type: "line"
    radius: 0.2 # for type "circular"
-   line_start: [0.0, 0.0] # for type "line"
-   line_end: [0.4, 0.0] # for type "line"
+   line_start: [0.0, 0.3815] # for type "line"
+   line_end: [0.0, -0.3815] # for type "line"
    front_offset: 0.2 # for type "two_circles"
    front_radius: 0.2 # for type "two_circles"
    rear_offset: 0.2 # for type "two_circles"

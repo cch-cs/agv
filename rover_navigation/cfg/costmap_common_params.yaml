@@ -2,7 +2,7 @@ obstacle_range: 2.5
 raytrace_range: 3.0
 robot_radius: 0.15
 footprint: [[-0.51, 0.3815] ,[-0.51, -0.3815] ,[0.51,-0.3815] ,[0.51, 0.3815]]
-inflation_radius: 0.3
+inflation_radius: 0.8 #0.3
 observation_sources: [front_laser_scan_sensor back_laser_scan_sensor] 
 front_laser_scan_sensor: {sensor_frame: agv_s300_front_link, data_type: LaserScan, topic: /front_laser/scan, marking: true, clearing: true}
 
