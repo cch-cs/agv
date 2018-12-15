@@ -16,7 +16,7 @@
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="headless" value="$(arg headless)"/>
-    <arg name="world_name" value="industrial_shop_floor_1.world"/>
+    <arg name="world_name" value="industrial_shop_floor.world"/>
   </include>
 
   <!-- controller launch file -->
@@ -38,7 +38,7 @@
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-	args="-urdf -x 2.5 -y 0 -Y 1.57 -model agv -param robot_description"/> 
+	args="-urdf -x 4.5 -y -1.5  -model agv -param robot_description"/> 
 	<!-- rviz file launch -->
   <!-- <node type="rviz" name="agv_rviz" pkg="rviz" args ="-d $(find agv_low)/rviz/agv.rviz" /> -->
 

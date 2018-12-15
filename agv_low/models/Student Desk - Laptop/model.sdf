@@ -6,14 +6,14 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://Student Desk - Laptop/meshes/Student Desk - Laptop.obj</uri>
+            <uri>model://Student Desk - Laptop/meshes/Student_Desk_Laptop.obj</uri>
           </mesh>
         </geometry>
       </visual>
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://Student Desk - Laptop/meshes/Student Desk - Laptop.obj</uri>
+            <uri>model://Student Desk - Laptop/meshes/Student_Desk_Laptop.obj</uri>
           </mesh>
         </geometry>
       </collision>
