@@ -11,7 +11,7 @@
 	<!-- Import summit XL base elements -->
 	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_urdf.xacro" />
 
-	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_gazebo_urdf.xacro" />
+<!--	<xacro:include filename="$(find agv_low)/urdf/bases/agv_low_base_gazebo_urdf.xacro" /> -->
   
 	<!-- Import summit XL wheels collision -->
 	<xacro:include filename="$(find agv_low)/urdf/wheels/agv_low_wheel_urdf_youbot_collision.xacro" />
