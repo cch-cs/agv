@@ -48,10 +48,10 @@
   		<xacro:mecanum_wheel_youbot_collision prefix="${prefix}back_left" angle="-1" parent="${prefix}base_link" />
   		<xacro:mecanum_wheel_youbot_collision prefix="${prefix}back_right" angle="1" parent="${prefix}base_link" />
 
-		<xacro:mecanum_wheel_visual prefix="${prefix}front_left" angle="-1" wheel_pos="0" parent="${prefix}base_link" />
-  		<xacro:mecanum_wheel_visual prefix="${prefix}front_right" angle="1" wheel_pos="1" parent="${prefix}base_link" />
-  		<xacro:mecanum_wheel_visual prefix="${prefix}back_left" angle="-1" wheel_pos="1" parent="${prefix}base_link" />
-  		<xacro:mecanum_wheel_visual prefix="${prefix}back_right" angle="1" wheel_pos="0" parent="${prefix}base_link" />
+		<xacro:mecanum_wheel_visual prefix="${prefix}front_left" angle="-1" wheel_pos="1" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_visual prefix="${prefix}front_right" angle="1" wheel_pos="0" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_visual prefix="${prefix}back_left" angle="-1" wheel_pos="0" parent="${prefix}base_link" />
+  		<xacro:mecanum_wheel_visual prefix="${prefix}back_right" angle="1" wheel_pos="1" parent="${prefix}base_link" />
 
 		<!-- Gazebo ros control pluggins -->
 
