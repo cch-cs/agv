@@ -14,7 +14,7 @@
 	</link>
 
 	<joint name="${prefix}base_footprint_joint" type="fixed">
-		<origin xyz="0 0 0.338" rpy="0 0 3.14" /> <!-- "0.48 -0.0245 0" -->
+		<origin xyz="0 0 0.338" rpy="0 0 0" /> <!-- "0.48 -0.0245 0" -->
 		<parent link="${prefix}base_footprint"/>
 		<child link="${prefix}base_link" />
 	</joint>
